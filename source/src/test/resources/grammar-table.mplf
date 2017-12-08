@@ -1,0 +1,18 @@
+---
+---
+
+main
+	label
+	|table1|
+		coluna1
+		cidade
+	secao
+		|table2|
+			nome
+				ricardo
+				mary
+				ronaldo
+			idade
+				30
+				25
+				40

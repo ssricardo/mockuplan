@@ -1,0 +1,11 @@
+---
+template: './grammar-ok.mplf'
+---
+
+body
+	$ Templated page
+	[legal]
+	main
+		basiclabel
+	[fim]
+

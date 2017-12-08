@@ -1,5 +1,14 @@
+# Editors
+.project
+.classpath
+.vscode
+.settings
+
 # Compiled class file
 *.class
+target
+build
+target/*
 
 # Log file
 *.log

@@ -1,0 +1,17 @@
+---
+states:[ab,ex]
+styles:[blue]
+---
+
+main
+	$ meu Header
+	label: "  "
+	[salvar]
+	Radio: ()
+	Check> [x]
+	email: "@"
+	- item
+	-item 2
+	^Cidades^
+	subTab
+		inner

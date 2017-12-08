@@ -1,0 +1,17 @@
+---
+---
+
+main
+	level1.1
+	level1.2
+	sec2
+		level2.1
+		level2.2
+	sec3
+		level3.1
+		sec4
+			mostInner
+			removeLater
+	level1.3
+root2
+	lastSon
