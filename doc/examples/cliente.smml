@@ -1,0 +1,24 @@
+---
+template:'./base.smml'
+styles:[default, /home/ricardo/temp/smml/estilo.css]
+---
+
+content
+	$ Clientes
+	filters
+		Filtro: " " [Buscar]
+	listagem
+		|table2|
+			nome
+				ricardo
+				mary
+				ronaldo
+			idade
+				30
+				25
+				40
+	acoes
+		[Add] 
+		[Edit] 
+		[Cancel]
+

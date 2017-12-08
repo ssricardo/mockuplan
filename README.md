@@ -1,6 +1,4 @@
-> Starting project yet...
-
-> Starting working!
+> In progress yet...
 
 # Mockuplan
 
@@ -45,7 +43,7 @@ Currently it will generate HTML file (in the future other output formats may be 
 
 
 The idea is inspired mainly by PlantUML.  
-This is better explained in [References Page], along with other technologies from which this is inspired. Take a look!  
+This is better explained in [References Page](https://github.com/ssricardo/mockuplan/wiki/references), along with other technologies from which this is inspired. Take a look!  
 
 ## How to use
 
@@ -58,12 +56,12 @@ You can also get help:
 
 > java -jar mockuplan.jar -help
 
-More details about the [execution and parameters](execution) are available at Wiki.
+More details about the [execution and parameters](https://github.com/ssricardo/mockuplan/wiki/how-use) are available at Wiki.
 
 ## How to write
 
 The grammar is simple. Currently it refers to only a small subset of HTML elements.  
-Learn it in [Grammar page](grammar) at Wiki.  
+Learn it in [Grammar page](https://github.com/ssricardo/mockuplan/wiki/grammar) at Wiki.  
 
 
 -------

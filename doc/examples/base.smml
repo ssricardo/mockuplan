@@ -1,0 +1,13 @@
+---
+---
+
+header
+	Sistema do Ri
+menu.nav
+	- Usuarios
+	- Clientes
+	- Pedidos
+	- Relatorios
+content
+	Bem-vindo
+

@@ -1,0 +1,31 @@
+#header {
+	height: 100px;
+	line-height: 100px;
+	background-color: #0C2C52;
+	font-size: 18px;
+	margin: 0;
+}
+
+#header label {
+	margin-left: 30px;
+	font-size: 18px;
+	color: #FFF;
+	font-weight: bold;
+}
+
+nav, .nav {
+	background-color: #5F6B61;
+	color: #FFFFFF;
+}
+
+h1, h2, h3, h4 {
+	background-color: #4682B4;
+}
+
+#filters:nth-child (1) {
+	min-width: 450px;
+}
+
+#acoes {
+	text-align: right;
+}
