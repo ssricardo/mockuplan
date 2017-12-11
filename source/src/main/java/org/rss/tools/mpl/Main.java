@@ -12,6 +12,7 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.rss.tools.mpl.domain.Document;
 import org.rss.tools.mpl.global.Parameter;
@@ -120,6 +121,14 @@ public class Main {
 				throw new IllegalStateException("A mandatory parameter was not specified: " + req);
 			} else if (params.get(req).isEmpty()) {
 				throw new IllegalStateException("A mandatory parameter contains no value: " + req);
+			}
+		}
+		
+		for (Entry<Parameter, String> entry : params.entrySet()) {
+			if (entry.getKey().isValueRequired()) {
+				if (entry.getValue() == null) {
+					throw new IllegalArgumentException("A parameter was specified by its value is missing: " + entry.getKey().getText());
+				}
 			}
 		}
 		return params;

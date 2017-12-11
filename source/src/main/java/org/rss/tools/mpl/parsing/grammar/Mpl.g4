@@ -1,7 +1,7 @@
-grammar Smml;
+grammar Mpl;
 
 @header {
-package org.rss.tools.smml.parsing.grammar;
+package org.rss.tools.mpl.parsing.grammar;
 }
 
 document: header LINE* body;
@@ -16,7 +16,7 @@ stylesLine: 'styles:' TS? '[' style ']' LINE;
 style: (IDENTIFIER | fileName) (',' TS? (IDENTIFIER | fileName))*;
 
 body: bodyLine+;
-bodyLine: TAB* component+ LINE;
+bodyLine: TAB* component+ TS* LINE;
 component: lineHeader
         | button
         | inputText
@@ -37,8 +37,8 @@ combobox: '^' TS? IDENTIFIER '^';
 radio: '(' TS? 'x'? ')';
 table: '|' TS? IDENTIFIER TS? '|';
 list: DASH listItem;
-listItem: TS? (IDENTIFIER | ABSP);
-lineText: (IDENTIFIER | TEXT_SYMBOL | ABSP)+;
+listItem: TS? lineText;
+lineText: (IDENTIFIER | DASH | TEXT_SYMBOL | ABSP)+;
 
 fileName: ((TEXT_SYMBOL | DASH)* IDENTIFIER)+;
 

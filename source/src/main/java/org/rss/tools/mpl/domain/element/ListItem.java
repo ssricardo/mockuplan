@@ -5,11 +5,13 @@ import org.rss.tools.mpl.domain.Element;
 public class ListItem implements Element {
 
 	private String value;
-	
+
+	private String styleClass;
+
 	public ListItem() {
 		super();
 	}
-	
+
 	public ListItem(String value) {
 		super();
 		this.value = value;
@@ -23,10 +25,17 @@ public class ListItem implements Element {
 		this.value = value;
 	}
 
+	public String getStyleClass() {
+		return styleClass;
+	}
+
+	public void setStyleClass(String styleClass) {
+		this.styleClass = styleClass;
+	}
+
 	@Override
 	public String toString() {
 		return "ListItem [" + value + "]";
 	}
-	
-	
+
 }

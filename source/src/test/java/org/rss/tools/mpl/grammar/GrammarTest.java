@@ -24,36 +24,36 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.rss.tools.mpl.parsing.grammar.SmmlBaseListener;
-import org.rss.tools.mpl.parsing.grammar.SmmlLexer;
-import org.rss.tools.mpl.parsing.grammar.SmmlListener;
-import org.rss.tools.mpl.parsing.grammar.SmmlParser;
-import org.rss.tools.mpl.parsing.grammar.SmmlParser.BodyLineContext;
-import org.rss.tools.mpl.parsing.grammar.SmmlParser.ButtonContext;
-import org.rss.tools.mpl.parsing.grammar.SmmlParser.ComboboxContext;
-import org.rss.tools.mpl.parsing.grammar.SmmlParser.DocumentContext;
-import org.rss.tools.mpl.parsing.grammar.SmmlParser.EmailContext;
-import org.rss.tools.mpl.parsing.grammar.SmmlParser.HeaderBodyContext;
-import org.rss.tools.mpl.parsing.grammar.SmmlParser.InputTextContext;
-import org.rss.tools.mpl.parsing.grammar.SmmlParser.LineHeaderContext;
-import org.rss.tools.mpl.parsing.grammar.SmmlParser.LineTextContext;
-import org.rss.tools.mpl.parsing.grammar.SmmlParser.ListContext;
-import org.rss.tools.mpl.parsing.grammar.SmmlParser.RadioContext;
-import org.rss.tools.mpl.parsing.grammar.SmmlParser.StatesLineContext;
-import org.rss.tools.mpl.parsing.grammar.SmmlParser.StyleContext;
-import org.rss.tools.mpl.parsing.grammar.SmmlParser.StylesLineContext;
-import org.rss.tools.mpl.parsing.grammar.SmmlParser.TemplateLineContext;
+import org.rss.tools.mpl.parsing.grammar.MplBaseListener;
+import org.rss.tools.mpl.parsing.grammar.MplLexer;
+import org.rss.tools.mpl.parsing.grammar.MplListener;
+import org.rss.tools.mpl.parsing.grammar.MplParser;
+import org.rss.tools.mpl.parsing.grammar.MplParser.BodyLineContext;
+import org.rss.tools.mpl.parsing.grammar.MplParser.ButtonContext;
+import org.rss.tools.mpl.parsing.grammar.MplParser.ComboboxContext;
+import org.rss.tools.mpl.parsing.grammar.MplParser.DocumentContext;
+import org.rss.tools.mpl.parsing.grammar.MplParser.EmailContext;
+import org.rss.tools.mpl.parsing.grammar.MplParser.HeaderBodyContext;
+import org.rss.tools.mpl.parsing.grammar.MplParser.InputTextContext;
+import org.rss.tools.mpl.parsing.grammar.MplParser.LineHeaderContext;
+import org.rss.tools.mpl.parsing.grammar.MplParser.LineTextContext;
+import org.rss.tools.mpl.parsing.grammar.MplParser.ListContext;
+import org.rss.tools.mpl.parsing.grammar.MplParser.RadioContext;
+import org.rss.tools.mpl.parsing.grammar.MplParser.StatesLineContext;
+import org.rss.tools.mpl.parsing.grammar.MplParser.StyleContext;
+import org.rss.tools.mpl.parsing.grammar.MplParser.StylesLineContext;
+import org.rss.tools.mpl.parsing.grammar.MplParser.TemplateLineContext;
 
 
+@SuppressWarnings("deprecation")
 @DisplayName("Grammar Reading/Parsing")
 public class GrammarTest {
 
 	@Test
 	@DisplayName("Correct file")
 	void testGrammar() throws Exception {
-		walkOnFile(new SmmlBaseListener() {
+		walkOnFile(new MplBaseListener() {
 
-			private String template;
 			private Set<String> states;
 			private String firstStyle;
 			private boolean readMain = false, readLabel = false;
@@ -71,7 +71,7 @@ public class GrammarTest {
 			
 			@Override
 			public void exitTemplateLine(TemplateLineContext ctx) {
-				this.template = ctx.fileName().getText();
+				ctx.fileName().getText();
 			}
 			
 			@Override
@@ -182,10 +182,10 @@ public class GrammarTest {
 	public void testHeader() throws Exception {
 		System.out.println("Testando headers");
 		
-		SmmlParser parser = readParseFile("/grammar-ok.mplf");
+		MplParser parser = readParseFile("/grammar-ok.mplf");
 		
 		ParseTreeWalker walker = new ParseTreeWalker();
-		SmmlListener listener = new SmmlBaseListener() {
+		MplListener listener = new MplBaseListener() {
 			@Override
 			public void enterHeaderBody(HeaderBodyContext ctx) {				
 			}
@@ -218,7 +218,7 @@ public class GrammarTest {
 		walker.walk(listener, parser.document());
 	}
 
-	private SmmlParser readParseFile(String fileName) throws IOException, Exception {
+	private MplParser readParseFile(String fileName) throws IOException, Exception {
 		URL res = getClass().getResource(fileName);
 		String name = Paths.get(res.toURI()).toString();
 		List<String> lines = Files.readAllLines(Paths.get(name));
@@ -229,16 +229,15 @@ public class GrammarTest {
 		
 //		System.out.println(content);
 		
-		@SuppressWarnings("deprecation")
 		CharStream input = new ANTLRInputStream(content.toString());
-		SmmlLexer lex = new SmmlLexer(input);
+		MplLexer lex = new MplLexer(input);
 		CommonTokenStream tokens = new CommonTokenStream(lex);
-		SmmlParser parser = new SmmlParser(tokens);
+		MplParser parser = new MplParser(tokens);
 		return parser;
 	}
 	
-	private void walkOnFile(SmmlListener listener) throws Exception {
-		SmmlParser parser = readParseFile("/grammar-ok.mplf");
+	private void walkOnFile(MplListener listener) throws Exception {
+		MplParser parser = readParseFile("/grammar-ok.mplf");
 		ParseTreeWalker walker = new ParseTreeWalker();
 		walker.walk(listener, parser.document());
 	}
@@ -246,12 +245,12 @@ public class GrammarTest {
 	@Test
 	@DisplayName("Unparsable file")
 	void testIncorrectFile() throws Exception {
-		SmmlParser parser = readParseFile("/grammar-error.mplf");
+		MplParser parser = readParseFile("/grammar-error.mplf");
 		ParseTreeWalker walker = new ParseTreeWalker();
 		
 		final List<Object> errorList = new ArrayList<>();
 		
-		walker.walk(new SmmlBaseListener() {
+		walker.walk(new MplBaseListener() {
 			
 			@Override
 			public void visitErrorNode(ErrorNode node) {

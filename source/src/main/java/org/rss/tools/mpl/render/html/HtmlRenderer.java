@@ -123,11 +123,8 @@ public class HtmlRenderer extends BaseDocumentRenderer implements DocumentVisito
 			.append("id=\"")
 			.append(element.getId())
 			.append("\" ");
-		if (element.getStyleClass() != null) {
-			sbBody.append("class=\"")
-				.append(element.getStyleClass())
-				.append("\"");
-		}
+
+		printStyleClass(element.getStyleClass());
 		sbBody.append(">");
 		
 		for (Element child : element.getChildren()) {
@@ -186,7 +183,10 @@ public class HtmlRenderer extends BaseDocumentRenderer implements DocumentVisito
 	// TODO open/close the UL
 	@Override
 	public void visit(ListItem element) {
-		sbBody.append("<li>")
+		sbBody.append("<li ");
+		printStyleClass(element.getStyleClass());
+		sbBody
+			.append(">")
 			.append(element.getValue())
 			.append("</li>")
 			.append(System.lineSeparator());
@@ -251,6 +251,14 @@ public class HtmlRenderer extends BaseDocumentRenderer implements DocumentVisito
 	@Override
 	public void visit(Element element) {
 		findVisitDecorated(element);
+	}
+	
+	private void printStyleClass(String value) {
+		if (value != null) {
+			sbBody.append("class=\"")
+				.append(value)
+				.append("\"");
+		}
 	}
 	
 }

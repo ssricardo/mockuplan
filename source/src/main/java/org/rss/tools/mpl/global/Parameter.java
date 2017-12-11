@@ -10,22 +10,25 @@ public enum Parameter {
 	
 	// Remember to update params.md altogether with this
 
-	INPUT("-i"), 
-	OUTPUT("-o"), 
-	HELP("-help"), 
-	TEMP("-temp"), 
-	SHOW_BROWSER("-show"),
+	INPUT("-i", true), 
+	OUTPUT("-o", true), 
+	HELP("-help", false), 
+	TEMP("-temp", false), 
+	SHOW_BROWSER("-show", false),
 
 	// ---------------------------------------------------
 
-	DEBUG("-debug"),
+	DEBUG("-debug", false),
 
-	TRACE("-trace"),;
+	TRACE("-trace", false);
 
 	private final String text;
+	
+	private final boolean valueRequired;
 
-	private Parameter(String text) {
+	private Parameter(String text, boolean required) {
 		this.text = text;
+		this.valueRequired = required;
 	}
 
 	public static Parameter getInstance(String value) {
@@ -41,4 +44,8 @@ public enum Parameter {
 		return text;
 	}
 
+	public boolean isValueRequired() {
+		return valueRequired;
+	}
+	
 }

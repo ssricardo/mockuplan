@@ -32,24 +32,24 @@ import org.rss.tools.mpl.domain.element.Radiobox;
 import org.rss.tools.mpl.domain.element.RowData;
 import org.rss.tools.mpl.domain.element.Table;
 import org.rss.tools.mpl.global.ServiceProvider;
-import org.rss.tools.mpl.parsing.grammar.SmmlBaseListener;
-import org.rss.tools.mpl.parsing.grammar.SmmlLexer;
-import org.rss.tools.mpl.parsing.grammar.SmmlParser;
-import org.rss.tools.mpl.parsing.grammar.SmmlParser.BodyContext;
-import org.rss.tools.mpl.parsing.grammar.SmmlParser.BodyLineContext;
-import org.rss.tools.mpl.parsing.grammar.SmmlParser.ButtonContext;
-import org.rss.tools.mpl.parsing.grammar.SmmlParser.CheckboxContext;
-import org.rss.tools.mpl.parsing.grammar.SmmlParser.ComboboxContext;
-import org.rss.tools.mpl.parsing.grammar.SmmlParser.EmailContext;
-import org.rss.tools.mpl.parsing.grammar.SmmlParser.InputTextContext;
-import org.rss.tools.mpl.parsing.grammar.SmmlParser.LineHeaderContext;
-import org.rss.tools.mpl.parsing.grammar.SmmlParser.LineTextContext;
-import org.rss.tools.mpl.parsing.grammar.SmmlParser.ListContext;
-import org.rss.tools.mpl.parsing.grammar.SmmlParser.RadioContext;
-import org.rss.tools.mpl.parsing.grammar.SmmlParser.StatesLineContext;
-import org.rss.tools.mpl.parsing.grammar.SmmlParser.StyleContext;
-import org.rss.tools.mpl.parsing.grammar.SmmlParser.TableContext;
-import org.rss.tools.mpl.parsing.grammar.SmmlParser.TemplateLineContext;
+import org.rss.tools.mpl.parsing.grammar.MplBaseListener;
+import org.rss.tools.mpl.parsing.grammar.MplLexer;
+import org.rss.tools.mpl.parsing.grammar.MplParser;
+import org.rss.tools.mpl.parsing.grammar.MplParser.BodyContext;
+import org.rss.tools.mpl.parsing.grammar.MplParser.BodyLineContext;
+import org.rss.tools.mpl.parsing.grammar.MplParser.ButtonContext;
+import org.rss.tools.mpl.parsing.grammar.MplParser.CheckboxContext;
+import org.rss.tools.mpl.parsing.grammar.MplParser.ComboboxContext;
+import org.rss.tools.mpl.parsing.grammar.MplParser.EmailContext;
+import org.rss.tools.mpl.parsing.grammar.MplParser.InputTextContext;
+import org.rss.tools.mpl.parsing.grammar.MplParser.LineHeaderContext;
+import org.rss.tools.mpl.parsing.grammar.MplParser.LineTextContext;
+import org.rss.tools.mpl.parsing.grammar.MplParser.ListContext;
+import org.rss.tools.mpl.parsing.grammar.MplParser.RadioContext;
+import org.rss.tools.mpl.parsing.grammar.MplParser.StatesLineContext;
+import org.rss.tools.mpl.parsing.grammar.MplParser.StyleContext;
+import org.rss.tools.mpl.parsing.grammar.MplParser.TableContext;
+import org.rss.tools.mpl.parsing.grammar.MplParser.TemplateLineContext;
 import org.rss.tools.mpl.reader.Reader;
 import org.rss.tools.mpl.validation.AppException;
 import org.rss.tools.mpl.validation.AppValidation;
@@ -80,9 +80,9 @@ public class MplDocumentParser implements Parser<Document> {
 	@Override
 	public Document parse(InputStream input) throws IOException {
 		CharStream cStream = new ANTLRInputStream(input);
-		SmmlLexer lex = new SmmlLexer(cStream);
+		MplLexer lex = new MplLexer(cStream);
 		CommonTokenStream tokens = new CommonTokenStream(lex);
-		SmmlParser parser = new SmmlParser(tokens);
+		MplParser parser = new MplParser(tokens);
 		
 		ParseTreeWalker walker = new ParseTreeWalker();
 		SmmlDocumentListener listener = new SmmlDocumentListener();
@@ -94,7 +94,7 @@ public class MplDocumentParser implements Parser<Document> {
 	/**
 	 * Implements a visitor pattern to parse an antln-based document
 	 */
-	private class SmmlDocumentListener extends SmmlBaseListener {
+	private class SmmlDocumentListener extends MplBaseListener {
 
 		private Document result = new Document();
 
@@ -339,10 +339,30 @@ public class MplDocumentParser implements Parser<Document> {
 		}
 		
 		@Override
+		public void enterList(ListContext ctx) {
+			stateQueue.addLast(ContainerContext.LIST);
+		}
+		
+		@Override
 		public void exitList(ListContext ctx) {
 			ListItem li = new ListItem();
-			li.setValue(ctx.listItem().getText().trim());
+			
+			if (! currentState().equals(ContainerContext.LIST)) {
+				throw new IllegalStateException("Invalid state while trying to process ListItem");
+			}
+			
+			Label lb = (Label) lineQueue.poll();
+
+			// checks style classes
+			if (lb.getValue().contains(".")) {
+				li.setStyleClass(lb.getValue().substring(lb.getValue().indexOf(".")).replaceAll("\\.", " "));
+				li.setValue(lb.getValue().substring(0, lb.getValue().indexOf(".")));
+			} else {
+				li.setValue(lb.getValue());
+			}
+
 			lineQueue.add(li);
+			stateQueue.removeLast();
 		}
 		
 		@Override
@@ -384,7 +404,8 @@ public class MplDocumentParser implements Parser<Document> {
 		SECTION,
 		TABLE,
 		COLUMN,
-		ROW
+		ROW,
+		LIST
 	}
 
 }
