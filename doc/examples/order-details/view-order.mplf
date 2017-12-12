@@ -1,0 +1,32 @@
+---
+template: './master-layout.mplf'
+styles: [default, /home/ricardo/mockuplan/css/font-awesome.min.css, /home/ricardo/mockuplan/css/proto.css]
+---
+
+body
+	filters
+		" " [Filter]
+	$ Order details
+	$$$ Client Ricardo Pele
+	result
+		Total: 3422.00
+	dadosGerais
+		Date: 12/10/2017 09:50
+		Status: Complete
+		Subsidiary: Av Sao Paulo
+		Payment type: Credit card
+	items
+		$$ Items
+		|listItens|
+			Nr
+				1
+				2
+			Description
+				Camera 18MP
+				Watch
+			Value
+				375
+				165
+			Quantity
+				2
+				3

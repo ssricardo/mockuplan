@@ -1,0 +1,12 @@
+---
+---
+
+header
+	Clients Register
+menu.nav
+	- Users
+	- Clients
+	- Orders
+	- Reports
+content
+	Welcome

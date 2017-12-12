@@ -1,19 +1,19 @@
 ---
-template:'./base.smml'
+template:'./base.mplf'
 styles:[default, /home/ricardo/temp/smml/estilo.css]
 ---
 
 content
-	$ Clientes
+	$ Client Listing
 	filters
-		Filtro: " " [Buscar]
+		Filter: " " [Search]
 	listagem
 		|table2|
-			nome
-				ricardo
-				mary
-				ronaldo
-			idade
+			Name
+				Ricardo
+				Mary
+				Ronaldo
+			Age
 				30
 				25
 				40
@@ -21,4 +21,3 @@ content
 		[Add] 
 		[Edit] 
 		[Cancel]
-
