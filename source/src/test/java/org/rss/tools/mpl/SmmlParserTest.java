@@ -128,8 +128,8 @@ public class SmmlParserTest {
 		
 		assertAll(
 				() -> assertEquals("body", section.getId()),
-				() -> assertNotNull(documento.getTempĺate()),
-				() -> assertEquals("main", documento.getTempĺate().getSectionList().get(0).getId())
+				() -> assertNotNull(documento.getTemplate()),
+				() -> assertEquals("main", documento.getTemplate().getSectionList().get(0).getId())
 				);
 		
 	}

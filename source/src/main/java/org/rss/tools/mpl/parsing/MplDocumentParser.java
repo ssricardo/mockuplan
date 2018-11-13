@@ -119,7 +119,7 @@ public class MplDocumentParser implements Parser<Document> {
 			try {
 				is = fileReader.read(templateRef);
 				Document parentDoc = parse(is);
-				result.setTempĺate(parentDoc);
+				result.setTemplate(parentDoc);
 			} catch (IOException e) {
 				throw new RuntimeException("Impossible to read or parse template file", e);
 			}
@@ -203,8 +203,7 @@ public class MplDocumentParser implements Parser<Document> {
 		private void addColumnOrRow() {
 			Label lb = checkSingleLabelGet();
 			if (ContainerContext.COLUMN.equals(currentState())) {
-				Column cl = new Column();
-				cl.setName(lb.getValue());
+				Column cl = new Column(lb.getValue());
 				getCurrentContainer().addChild(cl);
 			} else {
 				RowData rd = new RowData();				
@@ -226,9 +225,8 @@ public class MplDocumentParser implements Parser<Document> {
 				stateQueue.addLast(ContainerContext.COLUMN);
 			} else if (ContainerContext.COLUMN.equals(currentState())) {
 				Label lb = checkSingleLabelGet();
-				Column col = new Column();
-				col.setName(lb.getValue());
-				if (col.getChildren() == null) {
+				Column col = new Column(lb.getValue());
+				if (col.children() == null) {
 					col.setRowList(new ArrayList<>());
 					getCurrentContainer().addChild(col);
 					containerQueue.addLast((Container) col);
@@ -291,17 +289,16 @@ public class MplDocumentParser implements Parser<Document> {
 		
 		@Override
 		public void exitLineText(LineTextContext ctx) {
-			Label lb = new Label();
-			lb.setValue(ctx.getText().trim());
+			Label lb = new Label(ctx.getText().trim());
 			lineQueue.add(lb);
 		}
 
 		@Override
 		public void exitLineHeader(LineHeaderContext ctx) {
-			LineHeader lh = new LineHeader();
+			int level = ctx.CURRENCY().size();
+			String value = ctx.ABSP().getText().trim();
 
-			lh.setLevel(ctx.CURRENCY().size());
-			lh.setValue(ctx.ABSP().getText().trim());
+			LineHeader lh = new LineHeader(value, level);
 			lineQueue.add(lh);
 		}
 
@@ -334,7 +331,7 @@ public class MplDocumentParser implements Parser<Document> {
 		
 		@Override
 		public void exitCheckbox(CheckboxContext ctx) {
-			Checkbox cb = new Checkbox();
+			Checkbox cb = new Checkbox("");
 			lineQueue.add(cb);
 		}
 		
@@ -345,7 +342,7 @@ public class MplDocumentParser implements Parser<Document> {
 		
 		@Override
 		public void exitList(ListContext ctx) {
-			ListItem li = new ListItem();
+			ListItem li = null;
 			
 			if (! currentState().equals(ContainerContext.LIST)) {
 				throw new IllegalStateException("Invalid state while trying to process ListItem");
@@ -355,10 +352,11 @@ public class MplDocumentParser implements Parser<Document> {
 
 			// checks style classes
 			if (lb.getValue().contains(".")) {
+				String value = lb.getValue().substring(0, lb.getValue().indexOf("."));
+				li = new ListItem(value);
 				li.setStyleClass(lb.getValue().substring(lb.getValue().indexOf(".")).replaceAll("\\.", " "));
-				li.setValue(lb.getValue().substring(0, lb.getValue().indexOf(".")));
 			} else {
-				li.setValue(lb.getValue());
+				new ListItem(lb.getValue());
 			}
 
 			lineQueue.add(li);
