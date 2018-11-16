@@ -24,8 +24,8 @@ public class ParserDelegateTest {
 	
 	@Test
 	void testDefault() throws Exception {
-		DocumentVisitor render = ServiceProvider.get(DocumentVisitor.class);
-		Parser parser = ServiceProvider.get(Parser.class);
+		DocumentVisitor render = ServiceProvider.INSTANCE.get(DocumentVisitor.class);
+		Parser parser = ServiceProvider.INSTANCE.get(Parser.class);
 		
 		assertNotNull(render);
 		assertTrue(parser instanceof MplDocumentParser);
@@ -36,8 +36,8 @@ public class ParserDelegateTest {
 	// Needs to be executed in sequence. Otherwise it breaks the default test
 //	@Test
 	void testOverrideParser() throws Exception {
-		ServiceProvider.register(Parser.class, new MyParser());
-		Parser parser = ServiceProvider.get(Parser.class);
+		ServiceProvider.INSTANCE.register(Parser.class, new MyParser());
+		Parser parser = ServiceProvider.INSTANCE.get(Parser.class);
 		
 		assertNotNull(parser);
 		assertNotEquals(MplDocumentParser.getInstance(), parser);

@@ -60,7 +60,7 @@ public class Main {
 		
 		{
 			String currentPath = args.get(Parameter.INPUT);
-			ServiceProvider.register(Reader.class, new FileReader(Paths.get(currentPath).getParent()));
+			ServiceProvider.INSTANCE.register(Reader.class, new FileReader(Paths.get(currentPath).getParent()));
 		}
 
 		// ------------------------------------------------------------
@@ -107,7 +107,7 @@ public class Main {
 					throw new IllegalArgumentException("Error at argument " + anArg);
 				}
 
-				lastKey = Parameter.getInstance(anArg);
+				lastKey = Parameter.Companion.getInstance(anArg);
 				params.put(lastKey, null);
 			} else if (lastKey != null) {
 				params.put(lastKey, anArg);
@@ -158,7 +158,7 @@ public class Main {
 
 	// careful on change - review Logger aspect
 	private static List<RenderResponse> processRender(Document documento) throws Exception {
-		DocumentVisitor renderer = ServiceProvider.get(DocumentVisitor.class);
+		DocumentVisitor renderer = ServiceProvider.INSTANCE.get(DocumentVisitor.class);
 		renderer.visit(documento);
 		return renderer.getResult();
 	}
@@ -166,8 +166,8 @@ public class Main {
 	// careful on change - review Logger
 	private static Document processParse(String inputFile) throws IOException {
 		@SuppressWarnings("unchecked")
-		Parser<Document> parser = ServiceProvider.get(Parser.class);
-		InputStream is = ServiceProvider.get(Reader.class).read(inputFile);
+		Parser<Document> parser = ServiceProvider.INSTANCE.get(Parser.class);
+		InputStream is = ServiceProvider.INSTANCE.get(Reader.class).read(inputFile);
 		Document documento = parser.parse(is);
 		return documento;
 	}
@@ -178,8 +178,8 @@ public class Main {
 	public static void registerDefaultProviders() {
 		LOG.debug("registerDefaultProviders()");
 		
-		ServiceProvider.register(Parser.class, MplDocumentParser.getInstance());
-		ServiceProvider.register(DocumentVisitor.class, 
+		ServiceProvider.INSTANCE.register(Parser.class, MplDocumentParser.getInstance());
+		ServiceProvider.INSTANCE.register(DocumentVisitor.class,
 				RenderedFactory.getInstance().getRenderer(RendererType.HTML_TEMPLATE_STATE));
 	}
 }

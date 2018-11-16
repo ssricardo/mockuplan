@@ -30,7 +30,7 @@ class RowData : Element {
 
     var data: Any? = null
 
-    constructor() : super() {}
+    constructor() : super()
 
     constructor(data: Any) : super() {
         this.data = data

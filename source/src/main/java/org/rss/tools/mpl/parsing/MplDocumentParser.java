@@ -107,7 +107,7 @@ public class MplDocumentParser implements Parser<Document> {
 		
 		public SmmlDocumentListener() {
 			this.stateQueue.addFirst(ContainerContext.ROOT);
-			this.fileReader = ServiceProvider.get(Reader.class);
+			this.fileReader = ServiceProvider.INSTANCE.get(Reader.class);
 		}
 
 		// --------------------- handle headers -----------------

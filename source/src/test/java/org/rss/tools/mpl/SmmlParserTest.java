@@ -34,7 +34,7 @@ public class SmmlParserTest {
 	
 	@BeforeAll
 	static void prepare () {
-		ServiceProvider.register(Reader.class, new FileReader(
+		ServiceProvider.INSTANCE.register(Reader.class, new FileReader(
 				Paths.get(SmmlParserTest.class.getResource("/").getPath())));
 	}
 

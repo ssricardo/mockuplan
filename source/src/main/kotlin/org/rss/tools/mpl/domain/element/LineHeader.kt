@@ -22,7 +22,7 @@ data class LineHeader (var value: String, private val _level:Int = 1) : Element 
 
     var level = _level
     set(value) {
-        field = Math.max(field, 1)
+        field = Math.max(value, 1)
         field = Math.min(field, 6)
     }
 
