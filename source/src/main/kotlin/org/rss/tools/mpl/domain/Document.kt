@@ -5,10 +5,11 @@ import java.util.ArrayList
 data class Document(val sectionList: MutableList<Section> = ArrayList()) {
 
     var template: Document? = null
+    var templateRef: String? = null
 
-    var stateList: List<String>? = null
+    val stateList = mutableListOf<String>()
 
-    val styleList = ArrayList<String>()
+    val styleList = mutableListOf<String>()
 
     fun addSection(sec: Section) = this.sectionList.add(sec)
 

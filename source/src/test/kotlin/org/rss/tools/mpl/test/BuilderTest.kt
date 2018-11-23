@@ -16,23 +16,27 @@ class BuilderTest {
     }
 
     private fun createDocument() = document {
-            section("test") {
-                header("Topo")
-                text("Simple text")
-                button()
-                section {
-                    header("Meu teste", 2)
-                    cb()
-                    cb()
-                    check("Is this true?")
+        template("test")
+        states("state1", "state2", "state3")
+        styles("style1", "style2", "style3")
 
-                    li("Linha 1")
-                    li("Linha 2")
-                    li("Linha 3")
+        section("test") {
+            header("Topo")
+            text("Simple text")
+            button()
+            section {
+                header("Meu teste", 2)
+                cb()
+                cb()
+                check("Is this true?")
 
-                }
+                li("Linha 1")
+                li("Linha 2")
+                li("Linha 3")
+
             }
         }
+    }
 
     @Test
     @Disabled

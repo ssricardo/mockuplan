@@ -20,6 +20,22 @@ fun Document.section(id:String, init: Section.() -> Unit) {
     addSection(s)
 }
 
+fun Document.template(name: String) {
+    this.templateRef = name
+}
+
+fun Document.states(vararg names: String) {
+    names.forEach {
+        this.stateList.add(it)
+    }
+}
+
+fun Document.styles(vararg names: String) {
+    names.forEach {
+        styleList.add(it)
+    }
+}
+
 fun Section.section(id:String? = null, init: Section.() -> Unit) {
     val s = Section(id)
     s.init()

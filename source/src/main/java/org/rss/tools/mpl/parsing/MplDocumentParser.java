@@ -1,60 +1,27 @@
 package org.rss.tools.mpl.parsing;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Queue;
-
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.rss.tools.mpl.domain.Container;
-import org.rss.tools.mpl.domain.Document;
-import org.rss.tools.mpl.domain.Element;
-import org.rss.tools.mpl.domain.Section;
-import org.rss.tools.mpl.domain.element.Button;
-import org.rss.tools.mpl.domain.element.Checkbox;
-import org.rss.tools.mpl.domain.element.Column;
-import org.rss.tools.mpl.domain.element.Combobox;
-import org.rss.tools.mpl.domain.element.InputEmail;
-import org.rss.tools.mpl.domain.element.InputText;
-import org.rss.tools.mpl.domain.element.Label;
-import org.rss.tools.mpl.domain.element.LineHeader;
-import org.rss.tools.mpl.domain.element.ListItem;
-import org.rss.tools.mpl.domain.element.Radiobox;
-import org.rss.tools.mpl.domain.element.RowData;
-import org.rss.tools.mpl.domain.element.Table;
+import org.rss.tools.mpl.domain.*;
+import org.rss.tools.mpl.domain.element.*;
 import org.rss.tools.mpl.global.ServiceProvider;
 import org.rss.tools.mpl.parsing.grammar.MplBaseListener;
 import org.rss.tools.mpl.parsing.grammar.MplLexer;
 import org.rss.tools.mpl.parsing.grammar.MplParser;
-import org.rss.tools.mpl.parsing.grammar.MplParser.BodyContext;
-import org.rss.tools.mpl.parsing.grammar.MplParser.BodyLineContext;
-import org.rss.tools.mpl.parsing.grammar.MplParser.ButtonContext;
-import org.rss.tools.mpl.parsing.grammar.MplParser.CheckboxContext;
-import org.rss.tools.mpl.parsing.grammar.MplParser.ComboboxContext;
-import org.rss.tools.mpl.parsing.grammar.MplParser.EmailContext;
-import org.rss.tools.mpl.parsing.grammar.MplParser.InputTextContext;
-import org.rss.tools.mpl.parsing.grammar.MplParser.LineHeaderContext;
-import org.rss.tools.mpl.parsing.grammar.MplParser.LineTextContext;
-import org.rss.tools.mpl.parsing.grammar.MplParser.ListContext;
-import org.rss.tools.mpl.parsing.grammar.MplParser.RadioContext;
-import org.rss.tools.mpl.parsing.grammar.MplParser.StatesLineContext;
-import org.rss.tools.mpl.parsing.grammar.MplParser.StyleContext;
-import org.rss.tools.mpl.parsing.grammar.MplParser.TableContext;
-import org.rss.tools.mpl.parsing.grammar.MplParser.TemplateLineContext;
+import org.rss.tools.mpl.parsing.grammar.MplParser.*;
 import org.rss.tools.mpl.reader.Reader;
 import org.rss.tools.mpl.validation.AppException;
 import org.rss.tools.mpl.validation.AppValidation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
 
 /**
  * Responsible by creating a {@link Document} from an Smml file input
@@ -131,7 +98,8 @@ public class MplDocumentParser implements Parser<Document> {
 			for (TerminalNode node : ctx.IDENTIFIER()) {
 				states.add(node.getText().trim());
 			}
-			result.setStateList(states);
+			result.getStateList().addAll(states);
+//			result.setStateList(states);
 		}
 
 		@Override

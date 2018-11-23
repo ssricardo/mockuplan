@@ -94,7 +94,7 @@ class RendererTest {
         val sec = Section("main", ArrayList())
         val doc = Document()
         doc.addSection(sec)
-        doc.stateList = arrayListOf("enter", "error", "done")
+        doc.stateList.addAll(arrayListOf("enter", "error", "done"))
 
         val tested = StatesHtmlRenderer(original)
         tested.visit(doc)
