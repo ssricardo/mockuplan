@@ -1,7 +1,6 @@
 lexer grammar MplLexer;
 
 @header {
-package org.rss.tools.mpl.parsing.grammar2;
 }
 
 STRING : DOUBLE_QUOTE TEXT? DOUBLE_QUOTE;

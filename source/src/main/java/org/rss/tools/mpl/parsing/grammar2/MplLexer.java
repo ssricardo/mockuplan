@@ -1,6 +1,6 @@
-// Generated from MplLexer.g4 by ANTLR 4.7
-
+// Generated from D:\dev\git\mockuplan\source\src\main\java\org\rss\tools\mpl\parsing\grammar2\MplLexer.g4 by ANTLR 4.7
 package org.rss.tools.mpl.parsing.grammar2;
+
 
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
