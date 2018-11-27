@@ -24,14 +24,14 @@ fun Document.template(name: String) {
     this.templateRef = name
 }
 
-fun Document.states(vararg names: String) {
-    names.forEach {
+fun Document.states(vararg value: String) {
+    value.forEach {
         this.stateList.add(it)
     }
 }
 
-fun Document.styles(vararg names: String) {
-    names.forEach {
+fun Document.styles(vararg value: String) {
+    value.forEach {
         styleList.add(it)
     }
 }
@@ -42,13 +42,13 @@ fun Section.section(id:String? = null, init: Section.() -> Unit) {
     addChild(s)
 }
 
-fun Section.header(text: String, level:Int = 1) {
-    val h = LineHeader(text, level)
+fun Section.header(value: String, level:Int = 1) {
+    val h = LineHeader(value, level)
     addChild(h)
 }
 
-fun Section.button(label: String? = null) {
-    val b = Button(label)
+fun Section.button(text: String? = null) {
+    val b = Button(text)
     addChild(b)
 }
 

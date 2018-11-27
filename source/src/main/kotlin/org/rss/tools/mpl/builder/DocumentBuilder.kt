@@ -6,14 +6,11 @@ import org.rss.tools.mpl.domain.Container
 import org.rss.tools.mpl.domain.Document
 import org.rss.tools.mpl.domain.Element
 import org.rss.tools.mpl.parsing.Parser
-import org.rss.tools.mpl.parsing.grammar2.*
+import org.rss.tools.mpl.parsing.grammar2.MplLexer
+import org.rss.tools.mpl.parsing.grammar2.MplParser
 import org.slf4j.LoggerFactory
-
 import java.io.IOException
 import java.io.InputStream
-import java.util.LinkedList
-import java.util.Deque
-
 
 
 /**
@@ -32,38 +29,7 @@ object DocumentBuilder : Parser<Document> {
 
         val v = MplVisitorImpl()
 
-        /*ParseTreeWalker walker = new ParseTreeWalker();
-		SmmlDocumentListener listener = new SmmlDocumentListener();
-		walker.walk(listener, parser.document());
-		listener.result
-		*/
-
         return v.visit(parser.document())
-    }
-
-    private class MplVisitorImpl : MplBaseVisitor<Document>() {
-        private val containerQueue = LinkedList<Container<in Element>>()
-        private val stateQueue = LinkedList<ContainerContext>()
-
-        val document = Document()
-        var initialized = false
-
-        override fun visitDocument(ctx: MplParser.DocumentContext): Document {
-            println("Visiting Document: " + ctx.children.size)
-            initialized = true
-            super.visitDocument(ctx)
-            return document
-        }
-
-        override fun visitFunction(ctx: MplParser.FunctionContext): Document {
-            require(initialized)
-            println("Visiting Function: " + ctx.text)
-            val fName = ctx.name().WORD().text
-            val paramPairList = ctx.params().paramsBody().singleParam()
-                    .map { p -> Pair(p.WORD().text, p.paramValue().text) }
-            super.visitFunction(ctx)
-            return document
-        }
     }
 
     /**
@@ -385,6 +351,17 @@ object DocumentBuilder : Parser<Document> {
         LIST
     }
 
+}
 
+
+object Root: Container<Element> {
+
+    override fun children(): List<Element> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun addChild(element: Element) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
 }

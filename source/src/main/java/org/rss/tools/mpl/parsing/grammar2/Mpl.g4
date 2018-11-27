@@ -7,10 +7,9 @@ tokenVocab=MplLexer;
 @header {
 }
 
+document: (function)+ ;
 
-document: (function NEWLINE)+ ;
-
-function: name params? body? ;
+function: name params? body? (NEWLINE|EOF);
 
 name: WORD ;
 
@@ -18,8 +17,8 @@ params: OPEN_PAR paramsBody CLOSE_PAR ;
 
 paramsBody: (singleParam (COMMA singleParam)*)? ;
 
-singleParam : WORD EQUALS paramValue ;
+singleParam : (WORD EQUALS)? paramValue ;
 
 paramValue: STRING | NUMBER | BOOLEAN ;
 
-body: OPEN_BRACE NEWLINE document CLOSE_BRACE;
+body: OPEN_BRACE NEWLINE function* CLOSE_BRACE ;

@@ -1,4 +1,4 @@
-// Generated from D:/dev/git/mockuplan/source/src/main/java/org/rss/tools/mpl/parsing/grammar2\Mpl.g4 by ANTLR 4.7
+// Generated from /mnt/dados/projetos/git/mockuplan/source/src/main/java/org/rss/tools/mpl/parsing/grammar2/Mpl.g4 by ANTLR 4.7
 package org.rss.tools.mpl.parsing.grammar2;
 
 
@@ -94,10 +94,6 @@ public class MplParser extends Parser {
 		public FunctionContext function(int i) {
 			return getRuleContext(FunctionContext.class,i);
 		}
-		public List<TerminalNode> NEWLINE() { return getTokens(MplParser.NEWLINE); }
-		public TerminalNode NEWLINE(int i) {
-			return getToken(MplParser.NEWLINE, i);
-		}
 		public DocumentContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -124,7 +120,7 @@ public class MplParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(19); 
+			setState(17); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
@@ -132,11 +128,9 @@ public class MplParser extends Parser {
 				{
 				setState(16);
 				function();
-				setState(17);
-				match(NEWLINE);
 				}
 				}
-				setState(21); 
+				setState(19); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( _la==WORD );
@@ -157,6 +151,8 @@ public class MplParser extends Parser {
 		public NameContext name() {
 			return getRuleContext(NameContext.class,0);
 		}
+		public TerminalNode NEWLINE() { return getToken(MplParser.NEWLINE, 0); }
+		public TerminalNode EOF() { return getToken(MplParser.EOF, 0); }
 		public ParamsContext params() {
 			return getRuleContext(ParamsContext.class,0);
 		}
@@ -189,28 +185,38 @@ public class MplParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(23);
+			setState(21);
 			name();
-			setState(25);
+			setState(23);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==OPEN_PAR) {
 				{
-				setState(24);
+				setState(22);
 				params();
 				}
 			}
 
-			setState(28);
+			setState(26);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==OPEN_BRACE) {
 				{
-				setState(27);
+				setState(25);
 				body();
 				}
 			}
 
+			setState(28);
+			_la = _input.LA(1);
+			if ( !(_la==EOF || _la==NEWLINE) ) {
+			_errHandler.recoverInline(this);
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
+				consume();
+			}
 			}
 		}
 		catch (RecognitionException re) {
@@ -356,7 +362,7 @@ public class MplParser extends Parser {
 			setState(44);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if (_la==WORD) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << STRING) | (1L << BOOLEAN) | (1L << WORD) | (1L << NUMBER))) != 0)) {
 				{
 				setState(36);
 				singleParam();
@@ -393,11 +399,11 @@ public class MplParser extends Parser {
 	}
 
 	public static class SingleParamContext extends ParserRuleContext {
-		public TerminalNode WORD() { return getToken(MplParser.WORD, 0); }
-		public TerminalNode EQUALS() { return getToken(MplParser.EQUALS, 0); }
 		public ParamValueContext paramValue() {
 			return getRuleContext(ParamValueContext.class,0);
 		}
+		public TerminalNode WORD() { return getToken(MplParser.WORD, 0); }
+		public TerminalNode EQUALS() { return getToken(MplParser.EQUALS, 0); }
 		public SingleParamContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -420,14 +426,23 @@ public class MplParser extends Parser {
 	public final SingleParamContext singleParam() throws RecognitionException {
 		SingleParamContext _localctx = new SingleParamContext(_ctx, getState());
 		enterRule(_localctx, 10, RULE_singleParam);
+		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(46);
-			match(WORD);
-			setState(47);
-			match(EQUALS);
 			setState(48);
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			if (_la==WORD) {
+				{
+				setState(46);
+				match(WORD);
+				setState(47);
+				match(EQUALS);
+				}
+			}
+
+			setState(50);
 			paramValue();
 			}
 		}
@@ -472,7 +487,7 @@ public class MplParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(50);
+			setState(52);
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << STRING) | (1L << BOOLEAN) | (1L << NUMBER))) != 0)) ) {
 			_errHandler.recoverInline(this);
@@ -498,10 +513,13 @@ public class MplParser extends Parser {
 	public static class BodyContext extends ParserRuleContext {
 		public TerminalNode OPEN_BRACE() { return getToken(MplParser.OPEN_BRACE, 0); }
 		public TerminalNode NEWLINE() { return getToken(MplParser.NEWLINE, 0); }
-		public DocumentContext document() {
-			return getRuleContext(DocumentContext.class,0);
-		}
 		public TerminalNode CLOSE_BRACE() { return getToken(MplParser.CLOSE_BRACE, 0); }
+		public List<FunctionContext> function() {
+			return getRuleContexts(FunctionContext.class);
+		}
+		public FunctionContext function(int i) {
+			return getRuleContext(FunctionContext.class,i);
+		}
 		public BodyContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -524,16 +542,29 @@ public class MplParser extends Parser {
 	public final BodyContext body() throws RecognitionException {
 		BodyContext _localctx = new BodyContext(_ctx, getState());
 		enterRule(_localctx, 14, RULE_body);
+		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(52);
-			match(OPEN_BRACE);
-			setState(53);
-			match(NEWLINE);
 			setState(54);
-			document();
+			match(OPEN_BRACE);
 			setState(55);
+			match(NEWLINE);
+			setState(59);
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			while (_la==WORD) {
+				{
+				{
+				setState(56);
+				function();
+				}
+				}
+				setState(61);
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+			}
+			setState(62);
 			match(CLOSE_BRACE);
 			}
 		}
@@ -549,21 +580,23 @@ public class MplParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\20<\4\2\t\2\4\3\t"+
-		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\3\2\3\2\3\2\6\2\26"+
-		"\n\2\r\2\16\2\27\3\3\3\3\5\3\34\n\3\3\3\5\3\37\n\3\3\4\3\4\3\5\3\5\3\5"+
-		"\3\5\3\6\3\6\3\6\7\6*\n\6\f\6\16\6-\13\6\5\6/\n\6\3\7\3\7\3\7\3\7\3\b"+
-		"\3\b\3\t\3\t\3\t\3\t\3\t\3\t\2\2\n\2\4\6\b\n\f\16\20\2\3\5\2\3\3\13\13"+
-		"\r\r\28\2\25\3\2\2\2\4\31\3\2\2\2\6 \3\2\2\2\b\"\3\2\2\2\n.\3\2\2\2\f"+
-		"\60\3\2\2\2\16\64\3\2\2\2\20\66\3\2\2\2\22\23\5\4\3\2\23\24\7\17\2\2\24"+
-		"\26\3\2\2\2\25\22\3\2\2\2\26\27\3\2\2\2\27\25\3\2\2\2\27\30\3\2\2\2\30"+
-		"\3\3\2\2\2\31\33\5\6\4\2\32\34\5\b\5\2\33\32\3\2\2\2\33\34\3\2\2\2\34"+
-		"\36\3\2\2\2\35\37\5\20\t\2\36\35\3\2\2\2\36\37\3\2\2\2\37\5\3\2\2\2 !"+
-		"\7\f\2\2!\7\3\2\2\2\"#\7\5\2\2#$\5\n\6\2$%\7\6\2\2%\t\3\2\2\2&+\5\f\7"+
-		"\2\'(\7\n\2\2(*\5\f\7\2)\'\3\2\2\2*-\3\2\2\2+)\3\2\2\2+,\3\2\2\2,/\3\2"+
-		"\2\2-+\3\2\2\2.&\3\2\2\2./\3\2\2\2/\13\3\2\2\2\60\61\7\f\2\2\61\62\7\t"+
-		"\2\2\62\63\5\16\b\2\63\r\3\2\2\2\64\65\t\2\2\2\65\17\3\2\2\2\66\67\7\7"+
-		"\2\2\678\7\17\2\289\5\2\2\29:\7\b\2\2:\21\3\2\2\2\7\27\33\36+.";
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\20C\4\2\t\2\4\3\t"+
+		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\3\2\6\2\24\n\2\r\2"+
+		"\16\2\25\3\3\3\3\5\3\32\n\3\3\3\5\3\35\n\3\3\3\3\3\3\4\3\4\3\5\3\5\3\5"+
+		"\3\5\3\6\3\6\3\6\7\6*\n\6\f\6\16\6-\13\6\5\6/\n\6\3\7\3\7\5\7\63\n\7\3"+
+		"\7\3\7\3\b\3\b\3\t\3\t\3\t\7\t<\n\t\f\t\16\t?\13\t\3\t\3\t\3\t\2\2\n\2"+
+		"\4\6\b\n\f\16\20\2\4\3\3\17\17\5\2\3\3\13\13\r\r\2A\2\23\3\2\2\2\4\27"+
+		"\3\2\2\2\6 \3\2\2\2\b\"\3\2\2\2\n.\3\2\2\2\f\62\3\2\2\2\16\66\3\2\2\2"+
+		"\208\3\2\2\2\22\24\5\4\3\2\23\22\3\2\2\2\24\25\3\2\2\2\25\23\3\2\2\2\25"+
+		"\26\3\2\2\2\26\3\3\2\2\2\27\31\5\6\4\2\30\32\5\b\5\2\31\30\3\2\2\2\31"+
+		"\32\3\2\2\2\32\34\3\2\2\2\33\35\5\20\t\2\34\33\3\2\2\2\34\35\3\2\2\2\35"+
+		"\36\3\2\2\2\36\37\t\2\2\2\37\5\3\2\2\2 !\7\f\2\2!\7\3\2\2\2\"#\7\5\2\2"+
+		"#$\5\n\6\2$%\7\6\2\2%\t\3\2\2\2&+\5\f\7\2\'(\7\n\2\2(*\5\f\7\2)\'\3\2"+
+		"\2\2*-\3\2\2\2+)\3\2\2\2+,\3\2\2\2,/\3\2\2\2-+\3\2\2\2.&\3\2\2\2./\3\2"+
+		"\2\2/\13\3\2\2\2\60\61\7\f\2\2\61\63\7\t\2\2\62\60\3\2\2\2\62\63\3\2\2"+
+		"\2\63\64\3\2\2\2\64\65\5\16\b\2\65\r\3\2\2\2\66\67\t\3\2\2\67\17\3\2\2"+
+		"\289\7\7\2\29=\7\17\2\2:<\5\4\3\2;:\3\2\2\2<?\3\2\2\2=;\3\2\2\2=>\3\2"+
+		"\2\2>@\3\2\2\2?=\3\2\2\2@A\7\b\2\2A\21\3\2\2\2\t\25\31\34+.\62=";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

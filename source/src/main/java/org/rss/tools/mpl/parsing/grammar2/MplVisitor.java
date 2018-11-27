@@ -1,4 +1,4 @@
-// Generated from D:/dev/git/mockuplan/source/src/main/java/org/rss/tools/mpl/parsing/grammar2\Mpl.g4 by ANTLR 4.7
+// Generated from /mnt/dados/projetos/git/mockuplan/source/src/main/java/org/rss/tools/mpl/parsing/grammar2/Mpl.g4 by ANTLR 4.7
 package org.rss.tools.mpl.parsing.grammar2;
 
 
