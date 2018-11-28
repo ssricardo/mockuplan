@@ -1,4 +1,4 @@
-package org.rss.tools.mpl.grammar
+package org.rss.tools.mpl.test
 
 import org.junit.Assert.*
 import org.junit.jupiter.api.Disabled

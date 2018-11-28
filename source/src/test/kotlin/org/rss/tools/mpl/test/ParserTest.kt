@@ -1,4 +1,4 @@
-package org.rss.tools.mpl.grammar
+package org.rss.tools.mpl.test
 
 import org.antlr.v4.runtime.*
 import org.antlr.v4.runtime.atn.ATNConfigSet
