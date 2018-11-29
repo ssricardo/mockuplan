@@ -5,64 +5,64 @@ import java.util.ArrayList
 import org.rss.tools.mpl.domain.Container
 import org.rss.tools.mpl.domain.Element
 
-data class Table (var id: String? = null): Container<Column> {
+/**
+ Represents a list for tabular data
+ */
+data class Table (var id: String? = null): Container<Element> {
 
-    private val columnList = ArrayList<Column>()
+//    val columnList = ArrayList<Column>()
 
-    fun getColumnList(): List<Column> {
-        return columnList
+    val rowList: MutableList<RowData> by lazy {
+        ArrayList<RowData>()
     }
 
-    override fun toString(): String = "Table [$id, columns=$columnList]"
+    override fun toString(): String = "Table [$id, data=$rowList]"
 
-    override fun children(): List<Column> {
-        return getColumnList()
+    override fun children(): List<Element> {
+        return rowList
     }
 
-    override fun addChild(element: Column) {
-        columnList.add(element)
+    override fun addChild(element: Element) {
+        when (element) {
+            is RowData -> rowList.add(element)
+
+            is Column -> {
+                // always first row
+                if (rowList.size == 0) {
+                    rowList.add(RowData())
+                }
+                rowList[0].addChild(element)
+            }
+            else ->
+                throw IllegalArgumentException("Table Accepts only columns and rows. Trying with ${element::class}")
+        }
     }
 
 }
 
 /** Holds some sample data to fill elements in a View  */
-class RowData : Element {
+class RowData : Element, Container<Column> {
 
-    var data: Any? = null
+    val columns = mutableListOf<Column>()
 
-    constructor() : super()
-
-    constructor(data: Any) : super() {
-        this.data = data
+    constructor(vararg valueList:String) : super() {
+        valueList.map (::Column).forEach { columns.add(it) }
     }
 
-    override fun toString(): String  = "RowData [$data]"
+    constructor(value: Column) {
+        columns.add(value)
+    }
+
+    override fun children(): List<Column> = columns
+
+    override fun addChild(element: Column) {
+        columns.add(element)
+    }
+
+    override fun toString(): String  = "RowData [${columns.size} columns]"
 
 }
 
 
 /** Column of a table  */
-data class Column (val name:String): Container<RowData>, Element {
-
-    private var rowList: MutableList<RowData>? = null
-
-    fun getRowList(): List<RowData>? {
-        return rowList
-    }
-
-    fun setRowList(rowList: MutableList<RowData>) {
-        this.rowList = rowList
-    }
-
-    override fun children(): List<RowData> {
-        return getRowList() ?: emptyList()
-    }
-
-    override fun addChild(element: RowData) {
-        if (rowList == null) {
-            rowList = ArrayList()
-        }
-        this.rowList!!.add(element)
-    }
-
-}
+data class Column (val value:String): Element

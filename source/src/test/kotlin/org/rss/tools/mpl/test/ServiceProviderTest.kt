@@ -14,7 +14,7 @@ import java.io.InputStream
 import org.junit.Assert.*
 import org.rss.tools.mpl.Main
 
-class ParserDelegateTest {
+class ServiceProviderTest {
 
     @Test
     @Throws(Exception::class)
@@ -51,7 +51,9 @@ class ParserDelegateTest {
     companion object {
 
         @BeforeAll
+        @JvmStatic
         fun setup() {
+            println("Test: Register default providers")
             Main.registerDefaultProviders()
         }
     }

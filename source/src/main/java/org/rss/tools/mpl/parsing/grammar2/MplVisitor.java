@@ -3,6 +3,7 @@ package org.rss.tools.mpl.parsing.grammar2;
 
 
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This interface defines a complete generic visitor for a parse tree produced
@@ -60,4 +61,6 @@ public interface MplVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitBody(MplParser.BodyContext ctx);
+
+
 }

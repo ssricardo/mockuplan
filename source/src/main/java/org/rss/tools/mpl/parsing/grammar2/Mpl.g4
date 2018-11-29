@@ -9,7 +9,7 @@ tokenVocab=MplLexer;
 
 document: (function)+ ;
 
-function: name params? body? (NEWLINE|EOF);
+function: name params? body? ( DELIMITER | NEWLINE | EOF );
 
 name: WORD ;
 

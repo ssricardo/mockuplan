@@ -1,4 +1,4 @@
-package org.rss.tools.mpl.test
+package org.rss.tools.mpl.test.language
 
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -18,6 +18,7 @@ import java.nio.file.Paths
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.function.Executable
 
+/* Old parser test - to be updated */
 class MplParserTest {
 
     internal var parser: Parser<Document> = DocumentBuilder
@@ -26,8 +27,8 @@ class MplParserTest {
     @Throws(Exception::class)
     internal fun readFile(file: String) {
         val filesPath = Paths.get(MplParserTest::class.java.getResource(file).path)
-        val `is` = Files.newInputStream(filesPath)
-        documento = parser.parse(`is`)
+        val iStream = Files.newInputStream(filesPath)
+        documento = parser.parse(iStream)
         assertNotNull(documento)
     }
 
@@ -59,32 +60,7 @@ class MplParserTest {
         )
     }
 
-    @Test
-    @Throws(Exception::class)
-    internal fun testLevels() {
-        readFile("/grammar-levels.mplf")
-        val (_, children) = documento.sectionList[0]
-
-        println(children)
-
-        assertAll(
-                Executable { assertEquals(2, documento.sectionList.size, "It contains 2 main sections") },
-                Executable { assertEquals("main", documento.sectionList[0].id, "Section name = main") },
-                Executable { assertEquals("root2", documento.sectionList[1].id, "Section name = root2") },
-                Executable { assertEquals(5, documento.sectionList[0].children.size, "Section 'main' have 5 elems") },
-                Executable { assertEquals("level1.2", getLabel(children[1]), "First section label 1.2") },
-                Executable { assertEquals(Section::class.java, children[2].javaClass, "Element #2 type is Section ") },
-                Executable { assertEquals(2, (children[2] as Section).children.size, "Section have 2 children") },
-                Executable { assertEquals(Section::class.java, children[3].javaClass, "Element #3 type is Section ") },
-                Executable { assertEquals(2, (children[3] as Section).children.size) },
-                Executable { assertEquals("level1.3", getLabel(children[4])) }
-        )
-    }
-
-    private fun getLabel(element: Element): String {
-        return (element as Label).value
-    }
-
+    /*
     @Test
     @Throws(Exception::class)
     internal fun testTables() {
@@ -95,20 +71,21 @@ class MplParserTest {
         val firstTable = children[1] as Table
 
         assertAll(
-                Executable { assertEquals(2, firstTable.getColumnList().size, "First table should have 2 columns") },
-                Executable { assertEquals("cidade", firstTable.getColumnList()[1].name, "Column name = cidade") }
+                Executable { assertEquals(2, firstTable.columnList.size, "First table should have 2 columns") },
+                Executable { assertEquals("cidade", firstTable.columnList[1].value, "Column value = cidade") }
         )
 
         assertEquals(Table::class.java, (children[1] as Table).javaClass)
         val secTable = (children[2] as Section).children[0] as Table
 
         assertAll(
-                Executable { assertEquals(2, secTable.getColumnList().size, "Second table have 2 columns") },
-                Executable { assertEquals("idade", secTable.getColumnList()[1].name, "Column name = idade") },
-                Executable { assertNotNull(secTable.getColumnList()[0].getRowList(), "Row list not null in a column") },
-                Executable { assertEquals("ricardo", secTable.getColumnList()[0].getRowList()!![0].data, "Check Row data value") }
+                Executable { assertEquals(2, secTable.columnList.size, "Second table have 2 columns") },
+                Executable { assertEquals("idade", secTable.columnList[1].value, "Column value = idade") },
+                Executable { assertNotNull(secTable.columnList[0].rowList, "Row list not null in a column") },
+                Executable { assertEquals("ricardo", secTable.columnList[0].rowList[0].data, "Check Row data value") }
         )
     }
+    */
 
     @Test
     @Throws(Exception::class)
@@ -122,13 +99,6 @@ class MplParserTest {
                 Executable { assertEquals("main", documento.template!!.sectionList[0].id) }
         )
 
-    }
-
-    @Test
-    @Throws(Exception::class)
-    internal fun testFile() {
-        val `is` = Files.newInputStream(Paths.get("/mnt/Dados/projetos/pml/src/test/resources/grammar-ok.mplf"))
-        assertNotNull(`is`)
     }
 
     companion object {

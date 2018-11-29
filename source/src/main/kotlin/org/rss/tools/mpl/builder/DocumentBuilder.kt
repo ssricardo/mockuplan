@@ -23,6 +23,7 @@ object DocumentBuilder : Parser<Document> {
 
     @Throws(IOException::class)
     override fun parse(input: InputStream): Document {
+        LOGGER.info("Start parsing document")
         val cStream = CharStreams.fromStream(input)
         val tokens = CommonTokenStream(MplLexer(cStream))
         val parser = MplParser(tokens)
@@ -357,11 +358,11 @@ object DocumentBuilder : Parser<Document> {
 object Root: Container<Element> {
 
     override fun children(): List<Element> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        throw IllegalStateException("Should not call this")
     }
 
     override fun addChild(element: Element) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        throw IllegalStateException("Should not call this")
     }
 
 }

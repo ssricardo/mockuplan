@@ -1,4 +1,4 @@
-package org.rss.tools.mpl.test
+package org.rss.tools.mpl.test.language
 
 import org.antlr.v4.runtime.*
 import org.antlr.v4.runtime.atn.ATNConfigSet
@@ -9,6 +9,9 @@ import org.rss.tools.mpl.parsing.grammar2.MplLexer
 import org.rss.tools.mpl.parsing.grammar2.MplParser
 import java.util.*
 
+/**
+ * Tests the rules in parsers, that is, the sequences of tokens
+ */
 class ParserTest {
 
     @Test
@@ -126,4 +129,3 @@ class ParserTest {
         }
     }
 }
-

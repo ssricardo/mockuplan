@@ -1,17 +1,20 @@
----
-states:[ab,ex]
-styles:[blue]
----
+document {
+    states("ab", "ex")
+    styles("blue")
 
-main
-	$ meu Header
-	label: "  "
-	[salvar]
-	Radio: ()
-	Check> [x]
-	email: "@"
-	- item
-	-item 2
-	^Cidades^
-	subTab
-		inner
+    section("main") {
+        header("meu Header")
+        t("label:")
+        itext(); button("salvar")
+        t("Radio: "); radio()
+        text("Check: "); check("x")
+        text("email"); inputemail()
+        li("Item")
+        li("Item 2")
+        cb("Cidades")
+
+        section("subTab") {
+            text("inner")
+        }
+    }
+}

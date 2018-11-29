@@ -1,4 +1,4 @@
-package org.rss.tools.mpl.test
+package org.rss.tools.mpl.test.language
 
 import org.antlr.v4.runtime.*
 import org.antlr.v4.runtime.atn.ATNConfigSet
@@ -12,6 +12,9 @@ import java.io.ByteArrayInputStream
 import java.io.IOException
 import java.util.*
 
+/**
+ *  Tests strings againt lexer rules, to check matching the expected tokens
+ */
 class LexerTest {
 
     val errorListener: ANTLRErrorListener = object : ANTLRErrorListener {
@@ -48,14 +51,14 @@ class LexerTest {
 
         assertTrue(tokens.stream().anyMatch { p -> p.type == MplLexer.OPEN_BRACE })
         println("Tokens: ")
-        printTokens(tokens)
+//        printTokens(tokens)
     }
 
     @Test
     @Throws(IOException::class)
     internal fun testFunction() {
         val tokens = getTokensFromText("function ()")
-        printTokens(tokens)
+//        printTokens(tokens)
 
         assertEquals(4, tokens.size) // includes EOF
         assertEquals(MplLexer.WORD, tokens[0].type)
@@ -80,7 +83,7 @@ class LexerTest {
     @Throws(IOException::class)
     internal fun testText() {
         val tokens = getTokensFromText("\"my text with spaces. & + symbols\", \"my other text with \n newLine\"")
-        printTokens(tokens)
+//        printTokens(tokens)
 
         assertAll(
                 Executable { assertEquals(4, tokens.size) },

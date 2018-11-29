@@ -11,8 +11,7 @@ import org.rss.tools.mpl.render.RenderResponse
 import org.rss.tools.mpl.render.ResponseType
 import org.rss.tools.mpl.validation.AppException
 import org.rss.tools.mpl.validation.AppValidation
-
-import java.util.ArrayList
+import java.util.*
 
 /**
  * Produces an HTML String from Document objects
@@ -174,39 +173,26 @@ class HtmlRenderer : BaseDocumentRenderer(), DocumentVisitor {
         sbBody.append("<table id=\"{id}\" border=\"0\"> ".replace("{id}", element.id!!))
         sbBody.append("<thead>")
 
-        // invert the column -> rows to row -> columns
-        val rowColumn = ArrayList<Array<String?>>()
-        for (i in 0 until element.getColumnList().size) {
-            val col = element.getColumnList()[i]
-            sbBody.append("<th>{name}</th>".replace("{name}", col.name))
-
-            if (col.getRowList() != null) {
-                for (j in 0 until col.getRowList()!!.size) {
-                    val row = col.getRowList()!![j]
-
-                    if (rowColumn.size <= j) {
-                        rowColumn.add(Array(element.getColumnList().size){null})
-                    }
-
-                    rowColumn[j][i] = row.data.toString()
-                }
+        element.rowList.firstOrNull()?.let {row ->
+            row.columns.forEach {c ->
+                sbBody.append("<th>${c.value}</th>")
             }
         }
 
         sbBody.append("</thead>")
 
         // print rows
-        for (strings in rowColumn) {
-            sbBody.append("<tr>")
-            for (i in strings.indices) {
-                sbBody
-                        .append("<td>")
-                        .append(if (strings[i] != null) strings[i] else " ")
-                        .append("</td>")
+        element.rowList.forEachIndexed { index, row ->
+            if (index > 0) {
+                sbBody.append("<tr>")
+                row.columns.forEach {c ->
+                    sbBody.append("<td>${c.value}</td>")
+                }
+                sbBody.append("</tr>")
+                        .append(System.lineSeparator())
             }
-            sbBody.append("</tr>")
-                    .append(System.lineSeparator())
         }
+
         sbBody.append("</table>")
                 .append(System.lineSeparator())
     }

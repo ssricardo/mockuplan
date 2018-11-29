@@ -175,12 +175,9 @@ class RendererTest {
         sec.addChild(tb)
         tb.addChild(Column("city"))
         tb.addChild(Column("state"))
-        tb.getColumnList()[0].addChild(RowData("Sao Paulo"))
-        tb.getColumnList()[0].addChild(RowData("Florianopolis"))
-        tb.getColumnList()[1].addChild(RowData("Sao Paulo"))
-        tb.getColumnList()[1].addChild(RowData("Santa Catarina"))
-
-        tb.getColumnList()[0].addChild(RowData("Brasilia"))
+        tb.addChild(RowData("Sao Paulo", "Sao Paulo"))
+        tb.addChild(RowData("Florianopolis", "Santa Catarina"))
+        tb.addChild(RowData("Brasilia"))
 
         render.visit(doc)
         val result = render.result[0].data as String?

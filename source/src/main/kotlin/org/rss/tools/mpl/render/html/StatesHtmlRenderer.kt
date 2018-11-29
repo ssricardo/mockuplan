@@ -48,7 +48,7 @@ class StatesHtmlRenderer(private val wrapped: DocumentVisitor) : BaseDocumentRen
     }
 
     /**
-     * Add css class with the name of the current state
+     * Add css class with the value of the current state
      */
     override fun visit(element: Section) {
         val classes = element.styleClass
