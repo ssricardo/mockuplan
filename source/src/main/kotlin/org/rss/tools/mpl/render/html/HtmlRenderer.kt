@@ -53,7 +53,7 @@ class HtmlRenderer : BaseDocumentRenderer(), DocumentVisitor {
 
         val stylesPart = getStyles(document.styleList)
 
-        html.append("<html><head>")
+        html.append("<!DOCTYPE html><html><head>")
                 .append(stylesPart)
                 .append("</head>")
                 .append(System.lineSeparator())

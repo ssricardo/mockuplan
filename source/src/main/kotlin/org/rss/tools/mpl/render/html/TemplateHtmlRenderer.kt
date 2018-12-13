@@ -30,7 +30,7 @@ class TemplateHtmlRenderer(private val wrapped: DocumentVisitor) : BaseDocumentR
 
             // Map main sections of wrapped document
             for (section in document.sectionList) {
-                internalSectionMap[section?.id ?: throw IllegalStateException("Session ID null")] = section
+                internalSectionMap[section.id ?: throw IllegalStateException("Session ID null")] = section
             }
 
             this.startDocument(document)

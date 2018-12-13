@@ -11,6 +11,7 @@ import org.rss.tools.mpl.global.ServiceProvider
 import org.rss.tools.mpl.render.DocumentVisitor
 import org.rss.tools.mpl.render.html.HtmlRenderer
 
+/** Test the compiled code that users Kotlin style Builder */
 class BuildersTest {
 
     @Test
@@ -50,7 +51,7 @@ class BuildersTest {
     }
 
     private fun createDocument() = document {
-        template("test")
+//        template("test")
         states("state1", "state2", "state3")
         styles("style1", "style2", "style3")
 
@@ -78,8 +79,7 @@ class BuildersTest {
         }
     }
 
-    @Test
-    @Disabled
+//    @Test
     internal fun printKotlinDoc() {
         val doc = createDocument()
 

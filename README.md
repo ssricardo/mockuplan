@@ -1,4 +1,6 @@
-> Under development progress yet...
+> This project has been migrated to Kotlin and the syntax has changed as well.
+
+> The documentation will be updated soon
 
 # Mockuplan
 

@@ -7,22 +7,25 @@ import org.rss.tools.mpl.domain.Section
 import org.rss.tools.mpl.domain.element.*
 import org.rss.tools.mpl.parsing.grammar2.MplBaseVisitor
 import org.rss.tools.mpl.parsing.grammar2.MplParser
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import java.util.*
 import kotlin.reflect.KClass
 
-internal class MplVisitorImpl : MplBaseVisitor<Document>() {
+internal class MplVisitorImpl(val parser: DocumentBuilder) : MplBaseVisitor<Document>() {
 
     private var initialized = false
-    private val containerQueue: Queue<Container<in Element>> = LinkedList<Container<in Element>>()
-//    private val stateQueue = LinkedList<DocumentBuilder.ContainerContext>()
+    private val containerQueue: Deque<Container<in Element>> = LinkedList<Container<in Element>>()
 
+    /** Used to map a name to a real implementation of a function */
     data class FunctionImpl (val fn: (List<Pair<String?, String>>) -> Element,
                              val acceptedParent: List<KClass<out Container<Element>>>,
                              val acceptBody:Boolean = false)
 
     companion object {
+        private val LOG: Logger = LoggerFactory.getLogger(MplBaseVisitor::class.java);
+
         val functionMap = mapOf(
-//                "document" to FunctionImpl(::visitDummy, listOf(Root::class), true),
                 "section" to FunctionImpl(::visitSection, listOf(Root::class, Section::class), true),
                 "header" to FunctionImpl(::visitHeader, listOf(Section::class)),
                 "text" to FunctionImpl(::visitText, listOf(Section::class)),
@@ -53,6 +56,7 @@ internal class MplVisitorImpl : MplBaseVisitor<Document>() {
     val document = Document()
 
     override fun visitDocument(ctx: MplParser.DocumentContext): Document {
+        LOG.info("Visit document")
         initialized = true
         containerQueue.add(Root)
         super.visitDocument(ctx)
@@ -62,6 +66,7 @@ internal class MplVisitorImpl : MplBaseVisitor<Document>() {
     override fun visitFunction(ctx: MplParser.FunctionContext): Document {
         require(initialized)
         val fName = ctx.name().WORD().text
+        LOG.debug("function $fName")
         if (fName in specialFunctionList) {
             handleSpecial(fName, ctx)
             return document
@@ -81,9 +86,11 @@ internal class MplVisitorImpl : MplBaseVisitor<Document>() {
             throw IllegalStateException("Trying to use a body in function that does not accept it: $element")
         }
         if (element is Container<*>) {
+            LOG.debug("Container. Enquering... $element")
             containerQueue += element as Container<in Element>
             super.visitFunction(ctx)
-            containerQueue.poll()
+            containerQueue.removeLast()
+            LOG.debug("Removed from container queue... $element")
         } else {
             super.visitFunction(ctx)
         }
@@ -91,6 +98,7 @@ internal class MplVisitorImpl : MplBaseVisitor<Document>() {
 
     private fun addElementToParent(element: Element, funMap: FunctionImpl) {
         val currentState = containerQueue.last()
+        LOG.debug("Current head ${currentState}")
         if (currentState::class !in funMap.acceptedParent) {
             throw IllegalStateException("""An element seems to be in an unacceptable location in the tree.
                 |$element should not be put under ${currentState::class.simpleName}.
@@ -123,28 +131,19 @@ internal class MplVisitorImpl : MplBaseVisitor<Document>() {
 
     /** Document level functions. Distinct handle regarding other Elements  */
     private fun handleSpecial(fName: String, ctx: MplParser.FunctionContext) {
+        LOG.debug("handleSpecial $fName")
         val params = getParamPairsFromCtx(ctx)
         when(fName) {
             "document" -> super.visitFunction(ctx)
-            "state" -> params.map { it.second }.forEach { document.states(it) }
+            "states" -> params.map { it.second }.forEach { document.states(it) }
             "styles" -> params.map { it.second }.forEach { document.addStyleFile(it) }
+            "template" -> {
+                require(params.isNotEmpty()){"A template must have a string with the path to template file"}
+                TemplateReader.process(parser, document, params[0].second)
+            }
+            else -> throw UnsupportedOperationException(fName)
         }
     }
-
-
-/*
-    private fun createElement(fName: String?, paramList: List<Pair<String?, String>>?): Element? {
-        val fnImpl = functionMap[fName]
-        val acceptedParents = fnImpl?.acceptedParent ?:
-            throw IllegalArgumentException("Function not recognized: $fName. Please check the syntax")
-        val currentState = containerQueue.last()::class
-        if (currentState !in acceptedParents) {
-            throw IllegalStateException("""An element seems to be in an unacceptable location in the tree.
-                |$fName should not be put under ${currentState.simpleName}.
-            """.trimMargin())
-        }
-        return fnImpl.fn.invoke(paramList ?: emptyList())
-    }*/
 
 }
 
@@ -257,8 +256,14 @@ private fun visitTable(params: List<Pair<String?, String>>): Element {
 private fun visitColumns(params: List<Pair<String?, String>>): Element =
         visitTableElement(params, Column::class) { Column(it) }
 
-private fun visitRow(params: List<Pair<String?, String>>): Element =
-        visitTableElement(params, RowData::class) { RowData(it) }
+private fun visitRow(params: List<Pair<String?, String>>): Element {
+    val columns = mutableListOf<String>()
+    params.forEach { (_, s) ->
+        columns.add(s)
+    }
+    return RowData(*columns.toTypedArray())
+//    visitTableElement(params, RowData::class) { RowData(it) }
+}
 
 private inline fun <T:Element> visitTableElement(params: List<Pair<String?, String>>,
                                                  klass: KClass<T>, producer: (String)-> T): Element {

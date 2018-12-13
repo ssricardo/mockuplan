@@ -15,7 +15,7 @@ object ServiceProvider {
     }
 
     operator fun <T> get(key: Class<T>): T {
-        return REGISTER[key] ?: throw IllegalStateException("No instance was provieded for $key")
+        return REGISTER[key] ?: throw IllegalStateException("No instance was provided for $key")
     }
 
     internal class ReferenceWrapper {

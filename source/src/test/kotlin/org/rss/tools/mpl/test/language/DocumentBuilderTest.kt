@@ -2,11 +2,17 @@ package org.rss.tools.mpl.test.language
 
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.function.Executable
 import org.rss.tools.mpl.builder.DocumentBuilder
-import org.rss.tools.mpl.domain.element.Label
-import org.rss.tools.mpl.domain.element.LineHeader
-import org.rss.tools.mpl.domain.element.Table
+import org.rss.tools.mpl.domain.Document
+import org.rss.tools.mpl.domain.element.*
+import org.rss.tools.mpl.global.ServiceProvider
+import org.rss.tools.mpl.reader.FileReader
+import org.rss.tools.mpl.reader.Reader
+import java.nio.file.Files
+import java.nio.file.Paths
 
+/** Also as MplVisitorImpl test */
 class DocumentBuilderTest {
 
     val tested = DocumentBuilder
@@ -82,7 +88,56 @@ class DocumentBuilderTest {
         val doc = tested.parse(input)
         assertEquals(2, doc.sectionList[0].children.size)
         assertTrue(doc.sectionList[0].children[1] is Table)
-        assertEquals(2, (doc.sectionList[0].children[1] as Table).rowList.size)
+        println(doc.sectionList[0].children)
+        assertEquals(3, (doc.sectionList[0].children[1] as Table).rowList.size)
         assertEquals(3, (doc.sectionList[0].children[1] as Table).rowList[0].columns.size)
+    }
+
+    internal lateinit var documento: Document
+
+    @Throws(Exception::class)
+    internal fun readFile(file: String) {
+        val filesPath = Paths.get(javaClass.getResource(file).path)
+        val iStream = Files.newInputStream(filesPath)
+        documento = tested.parse(iStream)
+        assertNotNull(documento)
+    }
+
+    @Test
+    @Throws(Exception::class)
+    internal fun testSimpleFile() {
+        readFile("/grammar-ok.mplf")
+        val (_, children) = documento.sectionList[0]
+
+        assertAll(
+                Executable { assertEquals(1, documento.sectionList.size, "Contem uma seção raiz") },
+                Executable { assertEquals("main", documento.sectionList[0].id, "Seção é 'main'") },
+
+                Executable { assertEquals(LineHeader::class.java, children[0].javaClass, "Primeiro elemento é header") },
+                Executable { assertEquals("meu Header", (children[0] as LineHeader).value, "Verifica texto do header") },
+                Executable { assertEquals("label:", (children[1] as Label).value, "Verifica texto label") },
+                Executable { assertEquals(InputText::class.java, children[2].javaClass, "Verifica input text") },
+                Executable { assertEquals(Button::class.java, children[3].javaClass, "Verifica botao") },
+                Executable { assertEquals(Radiobox::class.java, children[5].javaClass, "Verifica radio button") },
+                Executable { assertEquals(Checkbox::class.java, children[7].javaClass, "Verifica checkbox") },
+                Executable { assertEquals(InputEmail::class.java, children[9].javaClass, "Verifica email") },
+                Executable { assertEquals(ListItem::class.java, children[10].javaClass, "Verifica list item") },
+                Executable { assertEquals("Cidades", (children[12] as Combobox).value, "Verifica Combobox de cidades") }
+
+                // testar combobox
+
+        )
+    }
+
+    @Test
+    @Throws(Exception::class)
+    internal fun testWithTemplate() {
+        ServiceProvider.register(Reader::class.java, FileReader(
+                Paths.get(javaClass.getResource("/").path)))
+
+        readFile("/grammar-template.mplf")
+
+        assertNotNull(documento.template)
+        assertNotNull(documento.template?.sectionList?.get(0)?.id == "main")
     }
 }

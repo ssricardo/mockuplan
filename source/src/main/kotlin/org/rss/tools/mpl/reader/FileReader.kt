@@ -7,8 +7,10 @@ import java.nio.file.Path
 import java.nio.file.StandardOpenOption
 
 /**
- * Reads configuration from a file in local file system
- * @author ricardo
+ * Reads configuration from a file in local file system.
+ * Uses a reference for baseDirectory, useful for reading a relative template file
+ *
+ * @author ricardo saturnino
  */
 class FileReader(private val baseDirectory: Path) : Reader {
 
