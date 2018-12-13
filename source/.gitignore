@@ -3,6 +3,8 @@
 .classpath
 .vscode
 .settings
+*.iml
+.idea
 
 # Compiled class file
 *.class

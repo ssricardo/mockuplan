@@ -1,11 +1,11 @@
----
-template: './grammar-ok.mplf'
----
-
-body
-	$ Templated page
-	[legal]
-	main
-		basiclabel
-	[fim]
-
+document {
+    template("./grammar-ok.mplf")
+    section() {
+        header("Templated page")
+        button("search")
+        section("main") {
+            t("basiclabel")
+        }
+        button("end")
+    }
+}
