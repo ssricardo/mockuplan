@@ -3,16 +3,16 @@ package rendering
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.function.Executable
-import org.rss.tools.mpl.domain.Document
-import org.rss.tools.mpl.domain.Section
-import org.rss.tools.mpl.domain.element.*
-import org.rss.tools.mpl.render.RenderedFactory
-import org.rss.tools.mpl.render.RendererType
-import org.rss.tools.mpl.render.ResponseType
-import org.rss.tools.mpl.render.html.FormattedHtmlRenderer
-import org.rss.tools.mpl.render.html.HtmlRenderer
-import org.rss.tools.mpl.render.html.StatesHtmlRenderer
-import org.rss.tools.mpl.render.html.TemplateHtmlRenderer
+import org.rss.tools.tevim.domain.Document
+import org.rss.tools.tevim.domain.Section
+import org.rss.tools.tevim.domain.element.*
+import org.rss.tools.tevim.render.RenderedFactory
+import org.rss.tools.tevim.render.RendererType
+import org.rss.tools.tevim.render.ResponseType
+import org.rss.tools.tevim.render.html.FormattedHtmlRenderer
+import org.rss.tools.tevim.render.html.HtmlRenderer
+import org.rss.tools.tevim.render.html.StatesHtmlRenderer
+import org.rss.tools.tevim.render.html.TemplateHtmlRenderer
 import java.util.*
 
 class RendererTest {

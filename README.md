@@ -2,88 +2,110 @@
 
 > The documentation will be updated soon
 
-# Mockuplan
+# Tevim
 
-*Mockuplan* stands for *Mockup Plan Language*.  
-This is a text based tool for creating mockups in a fast and simple way.  
-Basically you write a text file with a simple specific grammar and the tool generates the result.  
+*TeViM* stands for *Text View Mockup*.  
+This is a text based tool for creating mockups in a fast and reusable way.  
+You write a simple specific grammar and the tool generates the result. This grammar might be written either as a plain text file or as a Kotlin class, which will be compiled.  
 
-## Overview & Advantages
+## Overview
 
 * Write a simple file like:
 
-```
-	---
-	---
-	
-	main
-		$ My Page
-		label: "  "
-		[salvar]
-		Radio: ()
-		Check: [x]
-		email: "@"
-		- item
-		-item 2
-		^Citites^
-		subTab
-			inner
+```	
+	document {
+		states("ab", "ex")
+		styles("blue")
+
+		section("main") {
+			header("meu Header")
+			t("label:")
+			itext(); button("salvar")
+			t("Radio: "); radio()
+			text("Check: "); check("x")
+			text("email"); inputemail()
+			li("Item")
+			li("Item 2")
+			cb("Cidades")
+
+			section("subTab") {
+				text("inner")
+			}
+		}
+	}
 
 ```
 
-Currently it will generate HTML file (in the future other output formats may be added).
+This file will be processed and the output will be generated.  
+Currently it will create HTML files. In the future other output formats may be added...  
 
-> *But if HTML is already a text file, why would not I just write it directly?*  
+**Advantages**:  
 
-* HTML is a more verbose file (it needs to be more detailed for real runnable systems) 
+> *But considering HTML is already a text file, why would not I just write it directly?*  
+
+* HTML is a more verbose file (it needs to be more detailed for real runnable systems)
 * Ready to use CSS files
-	* Mockuplan plans are about having multiple existing CSS configuration (for while there is only one default)
+	* Tevim plans are about having multiple pre-existing CSS configuration (for while there is only one default)
 * There are **additional supported features** like:
 	* Templating (create files based on an existing structure)
 	* States (generate files for different states of the application)
 
 
 The idea is inspired mainly by PlantUML.  
-This is better explained in [References Page](https://github.com/ssricardo/mockuplan/wiki/references), along with other technologies from which this is inspired. Take a look!  
+This is better explained in [References Page](https://github.com/ssricardo/tevim/wiki/references), along with other technologies from which this is inspired. Take a look!  
 
 ## How to use
 
-Executing Mockuplan is really simple. Just run a code like:
+There are 2 ways of using it.  
 
-> java -jar mockuplan.jar -i /home/ricardo/myTextFile.mpl  
+**Standalone**:  
+
+The standoalone version uses plain text files to specify the mockup. The tool will interpret the plan and process it.  
+This way, you may use it regardless of programming language.  
+
+Execute Tevim as a Java application. Just run a code like:  
+
+> java -jar tevim.jar -i /home/ricardo/myTextFile.txt  
 
 
 You can also get help:  
 
-> java -jar mockuplan.jar -help
+> java -jar tevim.jar -help
 
-More details about the [execution and parameters](https://github.com/ssricardo/mockuplan/wiki/how-use) are available at Wiki.
+More details about the [execution and parameters](https://github.com/ssricardo/tevim/wiki/how-use) are available at Wiki.
+
+**Kotlin**:  
+
+Other option is using it as a Kotlin library.  This project uses Kotlin and make use of its Builder syntax. 
+Therefore it is possible to add it as a dependency and, using the builders, the syntax will be about the same.  
+
+The advantages of using this way:  
+
+* Make possible to use an IDE, with auto-complete features
+* The code will be compiled, making it easier to get (and fix) the errors
 
 ## How to write
 
 The grammar is simple. Currently it refers to only a small subset of HTML elements.  
-Learn it in [Grammar page](https://github.com/ssricardo/mockuplan/wiki/grammar) at Wiki.  
+Learn it in [Grammar page](https://github.com/ssricardo/tevim/wiki/grammar) at Wiki.  
 
 ### Result
 
 ![Order example](./doc/examples/order-details/mockup-orders.png)
 
-For more information, go to the Wiki Pages. 
+For more information, check out the Wiki Pages.  
 
 -------
 
-There are a lot of work to do yet, here you have some of the items. 
+Some of future steps:  
 
 ### TODOs
 
-* Improve the grammar
-	* It is still fragile, needs to be more tolerant of errors
 * Improve documentation
 * Ideas:
-	* Support images and links? imagens, links?
+	* Support images and links? 
 	* Include **datasources** to populate the pages with sample data
 * Document its architechture
-* Refactor some parts
 
 # Contribute
 

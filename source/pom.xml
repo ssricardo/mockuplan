@@ -3,11 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.rss.tools</groupId>
-	<artifactId>mockuplan</artifactId>
+	<artifactId>tevim</artifactId>
 	<version>2.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>Mockuplan - Mockup Plan Language</name>
+	<name>Tevim - Text View Mockup</name>
 	<url>ssricardo.github.io</url>
 
 	<build>
@@ -98,7 +98,7 @@
 							<transformers>
 								<transformer
 									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>org.rss.tools.mpl.Main</mainClass>
+									<mainClass>org.rss.tools.tevim.Main</mainClass>
 								</transformer>
 							</transformers>
 						</configuration>
