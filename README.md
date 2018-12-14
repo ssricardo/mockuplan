@@ -87,7 +87,7 @@ The advantages of using this way:
 ## How to write
 
 The grammar is simple. Currently it refers to only a small subset of HTML elements.  
-Learn it in [Grammar page](https://github.com/ssricardo/tevim/wiki/grammar) at Wiki.  
+Learn it in [Grammar page](https://github.com/ssricardo/tevim/wiki/syntax) at Wiki.  
 
 ### Result
 
